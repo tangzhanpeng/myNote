@@ -1,0 +1,1 @@
+文档：https://www.macwk.com/article/macos-file-damage

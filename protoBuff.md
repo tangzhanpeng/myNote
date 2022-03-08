@@ -1,0 +1,1 @@
+编译命令：protoc --java_out=. *.proto
