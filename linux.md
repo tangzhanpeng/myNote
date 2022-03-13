@@ -1,4 +1,4 @@
-#### 1、关机
+# 一、系统指令
 
 ```shell
 shutdown -h now #立即关机
@@ -6,88 +6,17 @@ shutdown -h 1 "msg" #1分钟后关机
 shutdown -r now #立即重启
 halt #关机
 reboot #重启
-sync #把内存数据同步到磁盘
 ```
 
-#### 2、修改ip配置
+1.2常用命令记录：
 
-```
-vim /etc/sysconfig/network-scripts/ifcfg-ens160
-
-TYPE=Ethernet
-PROXY_METHOD=none
-BROWSER_ONLY=no
-BOOTPROTO=static
-DEFROUTE=yes
-IPV4_FAILURE_FATAL=no
-IPV6INIT=yes
-IPV6_AUTOCONF=yes
-IPV6_DEFROUTE=yes
-IPV6_FAILURE_FATAL=no
-NAME=ens160
-UUID=13980af8-5521-4634-9daa-c75b03bb7c3c
-DEVICE=ens160
-ONBOOT=yes
-IPADDR=10.20.0.38
-GATEWAY=10.20.0.1
-NETMASK=255.255.255.0
+```shell
+cat /proc/sys/kernel/random/uuid  #生成uuid
 ```
 
-#### 3、重启网络
 
-```
-service network restart
-```
 
-#### 4、查看ip信息
-
-```
-ip addr
-```
-
-#### 5、修改主机名称
-
-```
-vim /etc/hostname
-```
-
-#### 6、查看主机名
-
-```
-hostname
-```
-
-#### 7、重启服务器
-
-```
-reboot
-```
-
-#### 8、修改host文件
-
-```
-sudo vim /etc/hosts
-127.0.0.1       localhost
-255.255.255.255 broadcasthost
-::1             localhost
-127.0.0.1 eureka7001.com
-127.0.0.1 eureka7002.com
-```
-
-#### 9、关闭防火墙
-
-```
-systemctl stop firewalld
-systemctl status firewalld
-```
-
-#### 10、创建、删除文件夹
-
-```
-mkdir -p zookeeper
-```
-
-#### 11、用户相关
+# 二、用户相关
 
 ```shell
 su - root                #切换身份
@@ -109,23 +38,14 @@ id **                       #查看用户所在组
 
 ```
 
-#### 12、运行级别
+# 三、目录管理
 
-```shell
-int[0123456]
-systemctl get-default #查看运行级别
-systemctl set-default multi-user.target #修改默认级别
-systemctl set-default graphical.target #修改默认级别
-```
-
-#### 13、目录管理
-
-##### 1、目录类型
+## 1、目录类型
 
 - pwd查看绝对路径 /home/tom   
 - 相对路径 当前如果在/home/tom目录下，前往home目录指令：  cd ../../home
 
-##### 2、操作目录
+## 2、操作目录
 
 ```shell
 mkdir /home/dog #创建一级目录
@@ -137,9 +57,10 @@ cp c.txt /bbb #复制文件到指定目录
 cp -r ddd asd #递归复制文件夹到指定目录
 mv ddd ccc #重命名，同目录下
 mv ddd /home/ddd
+rm -rf * #清空当前目录下所有文件
 ```
 
-##### 3、查看指令
+## 3、查看指令
 
 ```shell
 cat 、more、 less
@@ -153,7 +74,7 @@ ls -lh  #大小可以人看的
 
 ```
 
-##### 4、重定向
+## 4、重定向
 
 ```shell
 >    #覆盖
@@ -162,7 +83,7 @@ cat a.txt >> b.txt
 echo 'a' >> a.txt
 ```
 
-##### 5、其它指令
+## 5、其它指令
 
 ```shell
 ln -s /root /home/myroot       #符号连接，类似快捷方式
@@ -171,7 +92,7 @@ history         history 10     #历史指令
 !10 #执行指令编号的指令
 ```
 
-#### 14、时间日期类
+# 四、时间日期类
 
 ```shell
 date  #显示当前时间
@@ -181,7 +102,7 @@ cal #查看当前月日历
 cal 2022 #查看年厉
 ```
 
-#### 15、查找指令
+# 五、查找指令
 
 ```shell
 #find指令：
@@ -199,7 +120,7 @@ grep -n "hello" hello.java     #和上面的想过一样
 
 ```
 
-#### 16、压缩和解压
+# 六、压缩和解压
 
 ```shell
 #zip指令
@@ -221,9 +142,9 @@ tar -zxvf pc.tar.gz                  #解压
 tar -zxvf pc.tar.gz -C /opt/tem1     #解压到指定目录
 ```
 
-#### 17、权限、组
+# 七、权限、组
 
-##### 1、组相关
+## 1、组相关
 
 - linux中每个用户必须属于一个组
 
@@ -245,7 +166,7 @@ usermod -g 新组名 用户名  #修改用户所在组
 usermod -g 新目录 用户名  #修改用户登陆的初始目录，说明：用户需要有进入新目录的权限
 ```
 
-##### 2、权限相关
+## 2、权限相关
 
 - drwx------.  5 fox     monster 4096 3月   9 18:34 fox
 
@@ -282,6 +203,12 @@ usermod -g 新目录 用户名  #修改用户登陆的初始目录，说明：�
   >2、【w】代表可写：可以修改，对目录内创建+删除+重命名目录
   >
   >3、【x】代表可执行：可以进入该目录
+  
+- selinux问题
+
+  > vim /etc/sysconfig/eselinux
+  >
+  > 
 
 ```shell
 chmod指令
@@ -299,19 +226,20 @@ chmod 755 a.txt
 #修改文件的所有者
 chown tom /home/a.txt
 chown -R tom /kkk #修改目录下所有的文件的所有者 
+chown -R tom:tom /kkk/
 #修改文件/目录所在组
 chgrp tom 文件/目录
 chgrp -R tom 文件/目录
 ```
 
-#### 18、定时调度coud
+# 八、定时调度coud
 
 ```
 crontab -l -e -r
 at atq qtrm
 ```
 
-#### 19、磁盘分区
+# 九、磁盘分区
 
 ```shell
 lsblk #查看分区详情
@@ -325,4 +253,209 @@ ls -lR /etc | grep "^d" | wc -l #递归统计目录数量、递归
 tree /etc #树状
 ```
 
-#### 20、网络配置
+# 十、网络配置
+
+## 1、设置网络
+
+>Mac 关于设置vmware fusion 网络设置参考： https://blog.csdn.net/qq_37960324/article/details/82622553
+
+```shell
+ifconfig 、id addr #查看本机ip
+cd /etc/sysconfig/network-scripts/ #查看网卡类型 ens33 ens160等
+vim /etc/sysconfig/network-scripts/ifcfg-ens160
+
+route -n  #查看默认网关
+
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static  #设置为指定模式
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+NAME=ens160
+UUID=13980af8-5521-4634-9daa-c75b03bb7c3c
+DEVICE=ens160
+ONBOOT=yes
+###添加以下内容
+IPADDR=10.0.0.100  #ip地址
+GATEWAY=10.0.0.2  #网关
+NETMASK=255.255.255.0
+DNS1=8.8.8.8
+
+####重启网络
+service network restart
+ping 10.0.0.1 #测试本机
+ping 10.20.0.20 #测试内网
+ping www.baidu.com #测试外网 ok.....
+```
+
+## 2、设置主机名
+
+```shell
+vim /etc/hostname #修改主机名
+reboot #修改后重启
+hostname  #查看主机名
+
+#修改mac的hosts文件
+sudo vim /etc/hosts
+127.0.0.1       localhost
+255.255.255.255 broadcasthost
+::1             localhost
+127.0.0.1 eureka7001.com
+127.0.0.1 eureka7002.com
+10.0.0.100 study #添加映射关系
+####可以使用主机名进行连接了哈哈哈哈
+ping study
+```
+
+# 十一、进程管理
+
+## 1、常用
+
+```shell
+ #ps指令
+ ps -a                 #显示当前终端的所有进程信息
+ ps -u                 #以用户的格式显示进程信息
+ ps -x                 #显示后台进程运行的参数
+ ps -aux | grep ***    #过滤
+ ps -ef | grep **.     #以全格式显示所有线程
+ 
+ #杀死进程
+kill [指令] [进程id]
+killall             #杀死所有线程包括子线程
+-9                  #强制杀死 
+ps -ef | grep sshd  #查看远程登录服务，kill掉则无法远程登录
+systemctl start sshd.service #启动远程登录服务
+killall name        #根据进程名称杀死所有
+pe -ef | grep bash  #查看终端服务
+kill -9 ***.        #需要强制杀死
+
+#树状显示
+pstree -p
+pstree -u
+```
+
+## 2、services服务管理
+
+```shell
+service 服务名 【start|stop|restart|reload|status】
+#cenos7.0后很多服务不再使用service,而是systemctl
+ls -l /etc/init.d/ #查看还可以使用service的服务
+setup #查看系统所有服务，可以设置开机启动的服务
+```
+
+- 运行级别
+
+  > Linux 系统有 7 种运行级别(runlevel)：
+  > ：常用的是级别3和5
+  > 运行级别0：系统停机状态，系统默认运行级别不能设为0，否则不能正常启动
+  > 运行级别1：单用户工作状态，root权限，用于系统维护，禁止远程登陆
+  > 运行级别2：多用户状态(没有NFS)，不支持网络
+  > 运行级别3：完全的多用户状态(有 NFS)，无界面，登陆后进入控制台命令行模式
+  > 运行级别4：系统未使用，保留
+  > 运行级别5：X11控制台，登陆后进入图形GUI模式运行级别6：系统正常关闭并重启，默认运行级别不能设为6，否则不能正常启动 
+
+  ```shell
+  int[0123456]
+  systemctl get-default #查看运行级别
+  systemctl set-default multi-user.target #修改默认级别
+  systemctl set-default graphical.target #修改默认级别
+  ```
+
+- chkconfig指令
+
+  ```shell
+  #chkconfig命令可以给服务的各个运行级别设置 启动/关闭
+  chkconfig --list [| grep ***] #查看服务运行级别
+  chkconfig 服务名 --list
+  chkconfig --level 5 服务名1 on/off
+  #说明：chkconfig设置之后需要reboot才能生效
+  ```
+
+- systemctl指令
+
+  > systemctl 【start|stop|restart|reload|status】服务名
+  > systemctl指令管理的服务子在/usr/lib/systemd/system 查看
+
+  ```shell
+  systemctl list-unit-files | grep firewalld   #查看某个服务的指令
+  systemctl enable 服务名     #设置服务开机启动 cenos7后默认运行级别为3，5都生效
+  systemctl disable 服务名    #关闭服务开机启动
+  systemctl is-enable 服务名  #查询某个服务是否是自启动的
+  systemctl stop firewalld   #关闭防火墙
+  systemctl start firewalld  #开启防火墙3、防火墙
+  ```
+
+## 3、防火墙
+
+```shell
+netstat -anp | more   #查看网络监听情况
+telnet 10.0.0.100 111 #访问某个端口
+firewall-cmd --permanent --add-port=端口号/协议     #打开端口
+firewall-cmd --permanent --remove-port=端口号/协议  #关闭端口
+firewall-cmd --reload                             #重新载入，才能生效
+firewall-cmd --query-port=端口号/协议               #查看端口是否开放
+firewall-cmd --list-all
+```
+
+# 十二、动态监控
+
+## 1、监控进程
+
+> top与 ps 命令很相似。它们都用来显示正在执行进程
+> Top与ps最大的不同之处，在于top在执行一段时间可以更新正在运行的的进程。
+
+```
+top
+P    以cup使用率排序、某人此项
+M    以内存使用率排序
+N    以PID排序
+q    退出
+u    输入用户名查看用户的进程
+k    输入信号量之后杀掉进程
+top -d 10  	每隔10s自动刷新，某人为3秒
+```
+
+## 2、网络情况
+
+```shell
+netstat -anp | more
+netstat -anp | grep sshd
+```
+
+# 十三、rpm包的管理
+
+```shell
+rpm -qa | grep firefox    #查看是否安装某个rpm包
+rpm -q firefox
+rpm -qi firefox          #详细信息
+#软件包名 :查询软件包中的文件
+rpm -ql firefox
+rpm -qf 文件全路径名 查询文件所属的软件包
+rpm -qf /etc/passwd
+rpm -qf /root/install.log
+######卸载
+rpm -e 包名
+rpm -e --nodeps foo #强制卸载忽略依赖
+######安装
+rpm -ivh 包全路径
+参数说明：
+i=install 安装
+v=verbose 提示
+h=hash    进度条
+```
+
+# 十四、yun管理
+
+```shell
+yum list | grep xx软件  #查看yum是否有安装包
+yum install xxx #下载安装
+```
+
+# 十五、安装jdk
+
+[jdk安装](linux下安装jdk.md)
